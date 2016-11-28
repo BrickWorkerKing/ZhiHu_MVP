@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--虚线-->
+    <!--<declare-styleable name="DividerView">-->
+        <!--<attr name="dashLength" format="dimension" />-->
+        <!--<attr name="dashGap" format="dimension" />-->
+        <!--<attr name="dashThickness" format="dimension" />-->
+        <!--<attr name="lineColor" />-->
+        <!--<attr name="lineHeight" />-->
+        <!--<attr name="orientation" />-->
+    <!--</declare-styleable>-->
+
+    <!--&lt;!&ndash;实线&ndash;&gt;-->
+    <!--<declare-styleable name="LineView">-->
+        <!--<attr name="line_color" />-->
+        <!--<attr name="line_height" />-->
+        <!--<attr name="line_orientation" />-->
+    <!--</declare-styleable>-->
+
+</resources>
