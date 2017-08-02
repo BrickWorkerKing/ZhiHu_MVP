@@ -1,8 +1,11 @@
 package com.nn.zhihumvp.helper.rx;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 线程管理订阅
@@ -10,15 +13,15 @@ import rx.schedulers.Schedulers;
  */
 public class RxSchedulersHelper {
 
-    public static <T> Observable.Transformer<T, T> io_main() {
-        return new Observable.Transformer<T, T>() {
+    public static <T> ObservableTransformer<T, T> io_main() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public Observable<T> call(Observable<T> tObservable) {
-                return tObservable
+            public ObservableSource<T> apply(@NonNull Observable<T> upstream) {
+                return upstream
                         .subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }
+
         };
     }
 }

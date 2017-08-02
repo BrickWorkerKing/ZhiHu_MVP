@@ -4,16 +4,19 @@ package com.nn.zhihumvp.helper.rx;
 import com.nn.zhihumvp.app.ProjectApplication;
 import com.nn.zhihumvp.util.NetUtil;
 
-import rx.Subscriber;
+import org.reactivestreams.Subscriber;
+
 
 /**
  * http请求回调观察者
  * Created by YoKeyword on 16/4/27.
  */
-public abstract class RxSubscriber<T> extends Subscriber<T> {
+public abstract class RxSubscriber<T> implements Subscriber<T> {
+
+
 
     @Override
-    public void onCompleted() {
+    public void onComplete() {
 
     }
 

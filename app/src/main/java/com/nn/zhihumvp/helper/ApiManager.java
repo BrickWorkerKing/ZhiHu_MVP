@@ -4,8 +4,8 @@ import com.nn.zhihumvp.BuildConfig;
 import com.nn.zhihumvp.model.dto.LatestNewsDTO;
 import com.nn.zhihumvp.model.dto.NewsContentDTO;
 import com.nn.zhihumvp.model.dto.SectionListDTO;
-import com.nn.zhihumvp.model.dto.StartImageDTO;
 import com.nn.zhihumvp.model.dto.SectionMsgListDTO;
+import com.nn.zhihumvp.model.dto.StartImageDTO;
 import com.nn.zhihumvp.util.LogUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -13,14 +13,14 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
 
 /**
  * Api管理
@@ -32,12 +32,16 @@ public class ApiManager {
 
     private static final String HOST_HOME = "http://news-at.zhihu.com/"; // 服务器ip
     private static final String API = "api/4/";
-    private static ApiManager apiManager;
+    private static volatile ApiManager apiManager;
     private ApiService apiService;
 
     public static ApiManager getInstance() {
         if (apiManager == null) {
-            apiManager = new ApiManager();
+            synchronized (ApiManager.class) {
+                if (apiManager == null) {
+                    apiManager = new ApiManager();
+                }
+            }
         }
         return apiManager;
     }
@@ -66,7 +70,7 @@ public class ApiManager {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(HOST_HOME + API)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                     .client(client)
                     .build();
             apiService = retrofit.create(ApiService.class);

@@ -1,0 +1,35 @@
+ext{
+
+    android = [
+            compileSdkVersion: 25,
+            buildToolsVersion: "26.0.0",
+            minSdkVersion    : 15,
+            targetSdkVersion : 25,
+            versionCode      : 2,
+            versionName      : '2.0'
+    ]
+
+    def sdkVersion = '25.3.1'
+    def retrofitVersion = '2.3.0'
+
+    dependencies = [
+            appcompatV7      : "com.android.support:appcompat-v7:$sdkVersion",
+            design           : "com.android.support:design:$sdkVersion",
+            recyclerview     : "com.android.support:recyclerview-v7:$sdkVersion",
+            cardview         : "com.android.support:cardview-v7:$sdkVersion",
+            constraintLayout : "com.android.support.constraint:constraint-layout:1.0.2",
+            junit            : "junit:junit:4.12",
+            rxjava           : "io.reactivex.rxjava2:rxjava:2.1.0",
+            rxandroid        : "io.reactivex.rxjava2:rxandroid:2.0.1",
+            okhttp           : "com.squareup.okhttp3:okhttp:3.8.1",
+            gson             : "com.google.code.gson:gson:2.8.0",
+            butterknife      : "com.jakewharton:butterknife:8.7.0",
+            glide            : "com.github.bumptech.glide:glide:3.7.0",
+            retrofit         : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            gsonConverter    : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            rxjavaAdapter    : "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+            logInterceptor   : "com.squareup.okhttp3:logging-interceptor:3.8.1",
+
+    ]
+
+}

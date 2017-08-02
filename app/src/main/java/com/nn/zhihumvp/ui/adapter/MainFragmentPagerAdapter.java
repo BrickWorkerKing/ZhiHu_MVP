@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public View getTabView(int position) {
         View tabView = LayoutInflater.from(context).inflate(R.layout.item_mian_tab, null);
-        ImageView ivIcon = ButterKnife.findById(tabView, R.id.iv_icon);
+        AppCompatImageView ivIcon = ButterKnife.findById(tabView, R.id.iv_icon);
         TextView tvText = ButterKnife.findById(tabView, R.id.tv_text);
         ivIcon.setImageResource(tabIcons[position]);
         tvText.setText(tabTitles[position]);
