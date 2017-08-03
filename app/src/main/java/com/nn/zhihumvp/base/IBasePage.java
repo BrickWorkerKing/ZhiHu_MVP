@@ -5,8 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import rx.Subscription;
-
 /**
  * @author LiuZongRui  16/11/23
  */
@@ -20,6 +18,4 @@ public interface IBasePage {
     void _initRefreshLayout(SwipeRefreshLayout swipeRefreshLayout);
 
     void _gotoActivity(Class clazz, Bundle bundle);
-
-    void _rxAdd(Subscription subscription);
 }

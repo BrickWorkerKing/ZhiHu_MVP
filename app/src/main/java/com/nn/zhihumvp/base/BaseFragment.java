@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 
 import com.nn.zhihumvp.R;
 import com.nn.zhihumvp.app.Config;
+import com.nn.zhihumvp.helper.rx.RxDisposableManager;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author LiuZongRui  16/11/17
@@ -21,31 +21,31 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BaseFragment extends Fragment implements IBasePage {
 
-    private Activity activity;
-    private CompositeSubscription compositeSubscription;
+    private Activity mActivity;
+    private RxDisposableManager mDisposableManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.activity = getActivity();
+        this.mActivity = getActivity();
+        mDisposableManager = new RxDisposableManager();
     }
 
     protected Activity _getActivity() {
-        return this.activity;
-    }
-
-    @Override
-    public void _rxAdd(Subscription subscription) {
-        if (compositeSubscription == null) {
-            compositeSubscription = new CompositeSubscription();
-        }
-        compositeSubscription.add(subscription);
+        return this.mActivity;
     }
 
     protected void _goToActivity(Class clazz, Bundle bundle) {
-        Intent intent = new Intent(activity, clazz);
+        Intent intent = new Intent(mActivity, clazz);
         intent.putExtra(Config.BUNDLE, bundle);
         startActivity(intent);
+    }
+
+    protected void _rxAdd(Disposable disposable){
+        if (mDisposableManager == null){
+            mDisposableManager = new RxDisposableManager();
+        }
+        mDisposableManager.rxAdd(disposable);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class BaseFragment extends Fragment implements IBasePage {
     public void _initRecyclerView(RecyclerView recyclerView) {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+            recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         }
     }
 
@@ -75,9 +75,9 @@ public class BaseFragment extends Fragment implements IBasePage {
 
     @Override
     public void onDetach() {
-        if (compositeSubscription != null && compositeSubscription.hasSubscriptions()) {
-            compositeSubscription.unsubscribe();
-        }
         super.onDetach();
+        if (mDisposableManager != null){
+            mDisposableManager.disposableAll();
+        }
     }
 }

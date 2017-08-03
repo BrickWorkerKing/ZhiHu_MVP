@@ -18,7 +18,7 @@ import com.youth.banner.BannerConfig;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -87,11 +87,11 @@ public class LatestNewsAdapter extends BaseAdapter<LatestNewsVO> {
         notifyDataSetChanged();
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_name)
+        @BindView(R.id.tv_name)
         TextView tvTitle;
-        @Bind(R.id.iv_image)
+        @BindView(R.id.iv_image)
         ImageView ivImage;
 
         ItemViewHolder(View itemView) {
@@ -100,9 +100,9 @@ public class LatestNewsAdapter extends BaseAdapter<LatestNewsVO> {
         }
     }
 
-    class BannerViewHolder extends RecyclerView.ViewHolder {
+   static class BannerViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.banner_layout)
+        @BindView(R.id.banner_layout)
         Banner bannerLayout;
 
         BannerViewHolder(View itemView) {

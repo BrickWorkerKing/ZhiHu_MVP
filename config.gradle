@@ -11,6 +11,7 @@ ext{
 
     def sdkVersion = '25.3.1'
     def retrofitVersion = '2.3.0'
+    def butterknifeVersion = '8.7.0'
 
     dependencies = [
             appcompatV7      : "com.android.support:appcompat-v7:$sdkVersion",
@@ -23,7 +24,8 @@ ext{
             rxandroid        : "io.reactivex.rxjava2:rxandroid:2.0.1",
             okhttp           : "com.squareup.okhttp3:okhttp:3.8.1",
             gson             : "com.google.code.gson:gson:2.8.0",
-            butterknife      : "com.jakewharton:butterknife:8.7.0",
+            butterknife      : "com.jakewharton:butterknife:$butterknifeVersion",
+            annotationProcessor : "com.jakewharton:butterknife-compiler:$butterknifeVersion",
             glide            : "com.github.bumptech.glide:glide:3.7.0",
             retrofit         : "com.squareup.retrofit2:retrofit:$retrofitVersion",
             gsonConverter    : "com.squareup.retrofit2:converter-gson:$retrofitVersion",

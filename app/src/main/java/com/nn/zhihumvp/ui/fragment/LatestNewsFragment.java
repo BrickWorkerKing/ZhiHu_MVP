@@ -27,11 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
+import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 /**
  * 最新新闻
@@ -41,12 +43,13 @@ import rx.functions.Action1;
 
 public class LatestNewsFragment extends BaseFragment implements LatestNewsContract.View {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.ry_list)
+    @BindView(R.id.ry_list)
     RecyclerView ryList;
-    @Bind(R.id.refresh_layout)
+    @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
+    Unbinder unbinder;
     private LatestNewsPresenter presenter;
     private LatestNewsAdapter latestNewsAdapter;
 
@@ -55,7 +58,7 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_latest_news, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         init();
         return rootView;
     }
@@ -92,7 +95,7 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
 
     @Override
     public void onDestroyView() {
-        ButterKnife.unbind(this);
+        unbinder.unbind();
         presenter.onDetachView();
         super.onDestroyView();
     }
@@ -126,18 +129,18 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
             imageList.add(bean.getImage());
         }
         _rxAdd(Observable
-                .create(new Observable.OnSubscribe<DiffUtil.DiffResult>() {
+                .create(new ObservableOnSubscribe<DiffUtil.DiffResult>() {
                     @Override
-                    public void call(Subscriber<? super DiffUtil.DiffResult> subscriber) {
+                    public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<DiffUtil.DiffResult> e) throws Exception {
                         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new LatestDiffCallBack(latestNewsAdapter._getItems(), storyBeanList, latestNewsAdapter.getImageList(), imageList), true);
-                        subscriber.onNext(diffResult);
-                        subscriber.onCompleted();
+                        e.onNext(diffResult);
+                        e.onComplete();
                     }
                 })
                 .compose(RxSchedulersHelper.<DiffUtil.DiffResult>io_main())
-                .subscribe(new Action1<DiffUtil.DiffResult>() {
+                .subscribe(new Consumer<DiffUtil.DiffResult>() {
                     @Override
-                    public void call(DiffUtil.DiffResult diffResult) {
+                    public void accept(@io.reactivex.annotations.NonNull DiffUtil.DiffResult diffResult) throws Exception {
                         diffResult.dispatchUpdatesTo(latestNewsAdapter);
                         latestNewsAdapter.setData(storyBeanList, imageList);
                     }

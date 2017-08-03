@@ -15,16 +15,16 @@ import com.nn.zhihumvp.contract.NewsContentContract;
 import com.nn.zhihumvp.model.vo.NewsContentVO;
 import com.nn.zhihumvp.presenter.NewsContentPresenter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsContentActivity extends BaseActivity implements NewsContentContract.View {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.web_view)
-    WebView webView;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.web_view)
+    WebView webView;
     private String id = "";
 
     private NewsContentPresenter newsContentPresenter;

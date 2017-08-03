@@ -9,9 +9,10 @@ import com.nn.zhihumvp.helper.rx.RxSubscriber;
 import com.nn.zhihumvp.model.dto.NewsContentDTO;
 import com.nn.zhihumvp.model.vo.NewsContentVO;
 
-import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * 请求新闻内容
@@ -27,39 +28,38 @@ public class NewsContentModel {
         this.presenter = presenter;
     }
 
-    public Subscription loadNewsContent(String id) {
+    public Disposable loadNewsContent(String id) {
         return ApiManager.getInstance().getApiService().getNewsContent(id)
-                .map(new Func1<NewsContentDTO, NewsContentVO>() {
+                .map(new Function<NewsContentDTO, NewsContentVO>() {
                     @Override
-                    public NewsContentVO call(NewsContentDTO newsContentDTO) {
+                    public NewsContentVO apply(@io.reactivex.annotations.NonNull NewsContentDTO newsContentDTO) throws Exception {
                         return newsContentDTO.transform();
                     }
                 })
                 .compose(RxSchedulersHelper.<NewsContentVO>io_main())
-                .doOnSubscribe(new Action0() {
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void call() {
+                    public void accept(@io.reactivex.annotations.NonNull Disposable disposable) throws Exception {
                         presenter.onLoadStart();
                     }
                 })
-                .doOnTerminate(new Action0() {
+                .doOnTerminate(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         presenter.onLoadEnd();
                     }
                 })
-                .subscribe(new RxSubscriber<NewsContentVO>() {
+                .subscribe(new Consumer<NewsContentVO>() {
                     @Override
-                    public void _onNext(NewsContentVO o) {
-                        presenter.onLoadDataSuccess(o, false);
+                    public void accept(@io.reactivex.annotations.NonNull NewsContentVO newsContentVO) throws Exception {
+                        presenter.onLoadDataSuccess(newsContentVO, false);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void _onError(String msg) {
-                        presenter.onLoadDataFail(msg, false);
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        presenter.onLoadDataFail(throwable.getMessage(), false);
                     }
                 });
-
     }
 
 }

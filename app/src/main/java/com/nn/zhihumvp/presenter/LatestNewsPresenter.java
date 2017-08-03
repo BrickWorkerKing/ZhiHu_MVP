@@ -3,7 +3,7 @@ package com.nn.zhihumvp.presenter;
 import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.LatestNewsContract;
-import com.nn.zhihumvp.helper.rx.RxSubscriptionHelper;
+import com.nn.zhihumvp.helper.rx.RxDisposableManager;
 import com.nn.zhihumvp.model.LatestNewsModel;
 import com.nn.zhihumvp.model.vo.LatestNewsVO;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author LiuZongRui  16/11/16
  */
 
-public class LatestNewsPresenter extends RxSubscriptionHelper implements LatestNewsContract.Presenter {
+public class LatestNewsPresenter extends RxDisposableManager implements LatestNewsContract.Presenter {
 
     private LatestNewsContract.View mView;
     private LatestNewsModel mModel;
@@ -42,7 +42,7 @@ public class LatestNewsPresenter extends RxSubscriptionHelper implements LatestN
     @Override
     public void onDetachView() {
         mView = null;
-        unSubscribe();
+        disposableAll();
     }
 
     @Override

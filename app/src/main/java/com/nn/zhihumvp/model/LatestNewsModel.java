@@ -5,16 +5,16 @@ import android.support.annotation.NonNull;
 import com.nn.zhihumvp.contract.LatestNewsContract;
 import com.nn.zhihumvp.helper.ApiManager;
 import com.nn.zhihumvp.helper.rx.RxSchedulersHelper;
-import com.nn.zhihumvp.helper.rx.RxSubscriber;
 import com.nn.zhihumvp.model.dto.LatestNewsDTO;
 import com.nn.zhihumvp.model.vo.LatestNewsVO;
 
 import java.util.List;
 import java.util.Map;
 
-import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * 最新新闻
@@ -30,18 +30,18 @@ public class LatestNewsModel {
         this.presenter = presenter;
     }
 
-    public Subscription loadLatestNews(final boolean isRefresh) {
+    public Disposable loadLatestNews(final boolean isRefresh) {
         return ApiManager.getInstance().getApiService().getLatestNews()
-                .map(new Func1<LatestNewsDTO, Map<String, List<LatestNewsVO>>>() {
+                .map(new Function<LatestNewsDTO, Map<String, List<LatestNewsVO>>>() {
                     @Override
-                    public Map<String, List<LatestNewsVO>> call(LatestNewsDTO latestNewsDTO) {
+                    public Map<String, List<LatestNewsVO>> apply(@io.reactivex.annotations.NonNull LatestNewsDTO latestNewsDTO) throws Exception {
                         return latestNewsDTO.transform();
                     }
                 })
                 .compose(RxSchedulersHelper.<Map<String, List<LatestNewsVO>>>io_main())
-                .doOnSubscribe(new Action0() {
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void call() {
+                    public void accept(@io.reactivex.annotations.NonNull Disposable disposable) throws Exception {
                         if (isRefresh) {
                             presenter.onRefresh();
                         } else {
@@ -49,9 +49,9 @@ public class LatestNewsModel {
                         }
                     }
                 })
-                .doOnTerminate(new Action0() {
+                .doOnTerminate(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         if (isRefresh) {
                             presenter.onRefreshEnd();
                         } else {
@@ -59,15 +59,15 @@ public class LatestNewsModel {
                         }
                     }
                 })
-                .subscribe(new RxSubscriber<Map<String, List<LatestNewsVO>>>() {
+                .subscribe(new Consumer<Map<String, List<LatestNewsVO>>>() {
                     @Override
-                    public void _onNext(Map<String, List<LatestNewsVO>> stringListMap) {
+                    public void accept(@io.reactivex.annotations.NonNull Map<String, List<LatestNewsVO>> stringListMap) throws Exception {
                         presenter.onLoadDataSuccess(stringListMap, isRefresh);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void _onError(String msg) {
-                        presenter.onLoadDataFail(msg, isRefresh);
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        presenter.onLoadDataFail(throwable.getMessage(), isRefresh);
                     }
                 });
     }

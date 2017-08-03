@@ -4,20 +4,20 @@ import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.WelComeContract;
 import com.nn.zhihumvp.helper.rx.RxSchedulersHelper;
-import com.nn.zhihumvp.helper.rx.RxSubscriptionHelper;
+import com.nn.zhihumvp.helper.rx.RxDisposableManager;
 import com.nn.zhihumvp.model.WelComeModel;
 import com.nn.zhihumvp.model.vo.StartImageVO;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author LiuZongRui  16/11/14
  */
 
-public class WelComePresenter extends RxSubscriptionHelper implements WelComeContract.Presenter {
+public class WelComePresenter extends RxDisposableManager implements WelComeContract.Presenter {
 
     private WelComeContract.View mWelcomeView;
     private WelComeModel mWelcomeModel;
@@ -36,9 +36,9 @@ public class WelComePresenter extends RxSubscriptionHelper implements WelComeCon
     public void toMainActivity() {
         rxAdd(Observable.timer(2, TimeUnit.SECONDS)
                 .compose(RxSchedulersHelper.<Long>io_main())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(@io.reactivex.annotations.NonNull Long aLong) throws Exception {
                         mWelcomeView.toMainActivity();
                     }
                 }));
@@ -57,7 +57,7 @@ public class WelComePresenter extends RxSubscriptionHelper implements WelComeCon
     @Override
     public void onDetachView() {
         this.mWelcomeView = null;
-        unSubscribe();
+        disposableAll();
     }
 
     @Override

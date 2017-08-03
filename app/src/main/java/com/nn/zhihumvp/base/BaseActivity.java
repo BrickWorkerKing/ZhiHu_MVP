@@ -15,8 +15,6 @@ import com.nn.zhihumvp.R;
 import com.nn.zhihumvp.app.Config;
 import com.nn.zhihumvp.app.ProjectApplication;
 
-import rx.Subscription;
-
 /**
  * @author LiuZongRui  16/11/16
  */
@@ -79,11 +77,6 @@ public class BaseActivity extends AppCompatActivity implements IBasePage {
         Intent intent = new Intent(this, clazz);
         intent.putExtra(Config.BUNDLE, bundle);
         startActivity(intent);
-    }
-
-    @Override
-    public void _rxAdd(Subscription subscription) {
-
     }
 
     @Override

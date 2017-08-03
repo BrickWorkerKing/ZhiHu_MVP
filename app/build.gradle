@@ -41,8 +41,8 @@ dependencies {
     compile rootProject.ext.dependencies.cardview
     testCompile rootProject.ext.dependencies.junit
     // util
-//    compile 'com.loopj.android:android-async-http:1.4.9'
     compile rootProject.ext.dependencies.butterknife
+    compile rootProject.ext.dependencies.annotationProcessor
     compile rootProject.ext.dependencies.gson
     compile rootProject.ext.dependencies.glide
 

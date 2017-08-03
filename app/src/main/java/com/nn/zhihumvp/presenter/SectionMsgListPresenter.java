@@ -3,7 +3,7 @@ package com.nn.zhihumvp.presenter;
 import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.SectionMsgListContract;
-import com.nn.zhihumvp.helper.rx.RxSubscriptionHelper;
+import com.nn.zhihumvp.helper.rx.RxDisposableManager;
 import com.nn.zhihumvp.model.SectionMsgListModel;
 import com.nn.zhihumvp.model.vo.SectionMsgVO;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @author LiuZongRui  16/11/23
  */
 
-public class SectionMsgListPresenter extends RxSubscriptionHelper implements SectionMsgListContract.Presenter {
+public class SectionMsgListPresenter extends RxDisposableManager implements SectionMsgListContract.Presenter {
 
     private SectionMsgListModel msgListModel;
     private SectionMsgListContract.View view;
@@ -41,7 +41,7 @@ public class SectionMsgListPresenter extends RxSubscriptionHelper implements Sec
     @Override
     public void onDetachView() {
         view = null;
-        unSubscribe();
+        disposableAll();
     }
 
     @Override

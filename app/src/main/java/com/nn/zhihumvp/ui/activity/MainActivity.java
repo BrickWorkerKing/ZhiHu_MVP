@@ -14,14 +14,14 @@ import com.nn.zhihumvp.ui.fragment.SectionListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
-    @Bind(R.id.tab_layout)
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
 
     @Override

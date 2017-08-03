@@ -3,7 +3,7 @@ package com.nn.zhihumvp.presenter;
 import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.NewsContentContract;
-import com.nn.zhihumvp.helper.rx.RxSubscriptionHelper;
+import com.nn.zhihumvp.helper.rx.RxDisposableManager;
 import com.nn.zhihumvp.model.NewsContentModel;
 import com.nn.zhihumvp.model.vo.NewsContentVO;
 
@@ -11,7 +11,7 @@ import com.nn.zhihumvp.model.vo.NewsContentVO;
  * @author LiuZongRui  16/11/21
  */
 
-public class NewsContentPresenter extends RxSubscriptionHelper implements NewsContentContract.Presenter {
+public class NewsContentPresenter extends RxDisposableManager implements NewsContentContract.Presenter {
 
     private NewsContentContract.View contentView;
     private NewsContentModel contentModel;
@@ -28,7 +28,7 @@ public class NewsContentPresenter extends RxSubscriptionHelper implements NewsCo
 
     @Override
     public void onDetachView() {
-        unSubscribe();
+        disposableAll();
         this.contentView = null;
     }
 

@@ -24,8 +24,9 @@ import com.nn.zhihumvp.ui.adapter.diffcallback.SectionDiffCallBack;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 栏目新闻
@@ -35,12 +36,13 @@ import butterknife.ButterKnife;
 
 public class SectionListFragment extends BaseFragment implements SectionListContract.View {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.ry_list)
+    @BindView(R.id.ry_list)
     RecyclerView ryList;
-    @Bind(R.id.refresh_layout)
+    @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
+    Unbinder unbinder;
     private SectionListPresenter presenter;
     private SectionListAdapter listAdapter;
 
@@ -49,7 +51,7 @@ public class SectionListFragment extends BaseFragment implements SectionListCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         init();
         return rootView;
     }
@@ -125,7 +127,7 @@ public class SectionListFragment extends BaseFragment implements SectionListCont
 
     @Override
     public void onDestroyView() {
+        unbinder.unbind();
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

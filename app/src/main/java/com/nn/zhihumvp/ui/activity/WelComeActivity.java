@@ -14,12 +14,13 @@ import com.nn.zhihumvp.model.vo.StartImageVO;
 import com.nn.zhihumvp.presenter.WelComePresenter;
 import com.nn.zhihumvp.util.GlideUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WelComeActivity extends BaseActivity implements WelComeContract.View {
 
-    @Bind(R.id.iv_screen)
+
+    @BindView(R.id.iv_screen)
     ImageView ivScreen;
     private View mDecorView;
 

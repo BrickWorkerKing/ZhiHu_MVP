@@ -20,18 +20,18 @@ import com.nn.zhihumvp.ui.adapter.diffcallback.SectionMsgDiffCallBack;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SectionListMsgActivity extends BaseActivity implements SectionMsgListContract.View {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.ry_list)
-    RecyclerView ryList;
-    @Bind(R.id.refresh_layout)
-    SwipeRefreshLayout refreshLayout;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.ry_list)
+    RecyclerView ryList;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     private SectionMsgListPresenter presenter;
     private String id = "";
     private String title = "";
@@ -56,6 +56,12 @@ public class SectionListMsgActivity extends BaseActivity implements SectionMsgLi
         _initToolbar(toolbar);
         _initRecyclerView(ryList);
         _initRefreshLayout(refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadSectionMsgList(id, true);
+            }
+        });
         ryList.setAdapter(sectionMsgListAdapter = new SectionMsgListAdapter(this));
         presenter = new SectionMsgListPresenter(this);
         presenter.loadSectionMsgList(id, true);

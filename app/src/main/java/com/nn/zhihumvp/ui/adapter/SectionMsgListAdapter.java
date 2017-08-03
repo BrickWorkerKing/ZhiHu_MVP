@@ -12,7 +12,7 @@ import com.nn.zhihumvp.base.BaseAdapter;
 import com.nn.zhihumvp.model.vo.SectionMsgVO;
 import com.nn.zhihumvp.util.GlideUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -49,13 +49,12 @@ public class SectionMsgListAdapter extends BaseAdapter<SectionMsgVO> {
         }
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.iv_logo)
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_logo)
         ImageView ivLogo;
-        @Bind(R.id.tv_title)
+        @BindView(R.id.tv_title)
         TextView tvTitle;
-        @Bind(R.id.tv_date)
+        @BindView(R.id.tv_date)
         TextView tvDate;
 
         public ItemViewHolder(View itemView) {
