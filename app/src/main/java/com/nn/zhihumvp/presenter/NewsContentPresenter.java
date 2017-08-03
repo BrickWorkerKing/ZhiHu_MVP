@@ -43,12 +43,12 @@ public class NewsContentPresenter extends RxDisposableManager implements NewsCon
     }
 
     @Override
-    public void onLoadDataSuccess(@NonNull NewsContentVO newsContent, boolean isRefresh) {
-        this.contentView.showData(newsContent, isRefresh);
+    public void onLoadDataSuccess(@NonNull NewsContentVO newsContent) {
+        this.contentView.showData(newsContent);
     }
 
     @Override
-    public void onLoadDataFail(@NonNull String error, boolean isRefresh) {
-        this.contentView.showError(error, isRefresh);
+    public void onLoadDataFail(@NonNull String error) {
+        this.contentView.showError(error);
     }
 }

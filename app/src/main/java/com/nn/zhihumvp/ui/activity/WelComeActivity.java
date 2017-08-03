@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.nn.zhihumvp.R;
 import com.nn.zhihumvp.base.BaseActivity;
@@ -66,14 +65,13 @@ public class WelComeActivity extends BaseActivity implements WelComeContract.Vie
     }
 
     @Override
-    public void showData(@NonNull StartImageVO startImageVO, boolean isRefresh) {
+    public void showData(@NonNull StartImageVO startImageVO) {
         GlideUtil.loadImage(this, startImageVO.getImg(), ivScreen);
         this.mWelComePresenter.toMainActivity();
     }
 
     @Override
-    public void showError(String error, boolean isRefresh) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    public void showError(@NonNull String error) {
         this.mWelComePresenter.toMainActivity();
     }
 

@@ -62,7 +62,7 @@ public class SectionListFragment extends BaseFragment implements SectionListCont
         _initRefreshLayout(refreshLayout);
         ryList.setAdapter(listAdapter = new SectionListAdapter(_getActivity()));
         presenter = new SectionListPresenter(this);
-        presenter.loadSectionList(true);
+        presenter.loadSectionList(false);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,25 +97,18 @@ public class SectionListFragment extends BaseFragment implements SectionListCont
         refreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void showLoadHint() {
-
-    }
-
-    @Override
-    public void hideLoadHint() {
-
-    }
 
     @Override
     public void showData(@NonNull List<SectionVO> list, boolean isRefresh) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SectionDiffCallBack(listAdapter._getItems(), list));
-        result.dispatchUpdatesTo(listAdapter);
-        listAdapter._setItems(list);
+        if (isRefresh) {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SectionDiffCallBack(listAdapter._getItems(), list));
+            result.dispatchUpdatesTo(listAdapter);
+        }
+        listAdapter._setItems(list, isRefresh);
     }
 
     @Override
-    public void showError(String error, boolean isRefresh) {
+    public void showError(@NonNull String error, boolean isRefresh) {
         Toast.makeText(_getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 

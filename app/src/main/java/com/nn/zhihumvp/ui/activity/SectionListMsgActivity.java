@@ -64,7 +64,7 @@ public class SectionListMsgActivity extends BaseActivity implements SectionMsgLi
         });
         ryList.setAdapter(sectionMsgListAdapter = new SectionMsgListAdapter(this));
         presenter = new SectionMsgListPresenter(this);
-        presenter.loadSectionMsgList(id, true);
+        presenter.loadSectionMsgList(id, false);
     }
 
     @Override
@@ -77,25 +77,18 @@ public class SectionListMsgActivity extends BaseActivity implements SectionMsgLi
         refreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void showLoadHint() {
-
-    }
-
-    @Override
-    public void hideLoadHint() {
-
-    }
 
     @Override
     public void showData(@NonNull List<SectionMsgVO> sectionMsgVOs, boolean isRefresh) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SectionMsgDiffCallBack(sectionMsgListAdapter._getItems(), sectionMsgVOs));
-        result.dispatchUpdatesTo(sectionMsgListAdapter);
-        sectionMsgListAdapter._setItems(sectionMsgVOs);
+        if (isRefresh) {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SectionMsgDiffCallBack(sectionMsgListAdapter._getItems(), sectionMsgVOs));
+            result.dispatchUpdatesTo(sectionMsgListAdapter);
+        }
+        sectionMsgListAdapter._setItems(sectionMsgVOs,isRefresh);
     }
 
     @Override
-    public void showError(String error, boolean isRefresh) {
+    public void showError(@NonNull String error, boolean isRefresh) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 

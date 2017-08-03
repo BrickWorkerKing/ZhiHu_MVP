@@ -4,17 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.SectionListContract;
 import com.nn.zhihumvp.helper.ApiManager;
-import com.nn.zhihumvp.helper.rx.RxSchedulersHelper;
-import com.nn.zhihumvp.helper.rx.RxSubscriber;
+import com.nn.zhihumvp.helper.rx.RxException;
+import com.nn.zhihumvp.helper.rx.RxUtils;
 import com.nn.zhihumvp.model.dto.SectionListDTO;
 import com.nn.zhihumvp.model.vo.SectionVO;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 
 /**
@@ -31,44 +29,20 @@ public class SectionListModel {
 
     public Disposable loadData(final boolean isRefresh) {
         return ApiManager.getInstance().getApiService().getSectionList()
-                .map(new Function<SectionListDTO, List<SectionVO>>() {
-                    @Override
-                    public List<SectionVO> apply(@io.reactivex.annotations.NonNull SectionListDTO sectionListDTO) throws Exception {
-                        return sectionListDTO.transform();
-                    }
-                })
-                .compose(RxSchedulersHelper.<List<SectionVO>>io_main())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull Disposable disposable) throws Exception {
-                        if (isRefresh) {
-                            presenter.onRefresh();
-                        } else {
-                            presenter.onLoadStart();
-                        }
-                    }
-                })
-                .doOnTerminate(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (isRefresh) {
-                            presenter.onRefreshEnd();
-                        } else {
-                            presenter.onLoadEnd();
-                        }
-                    }
-                })
+                .compose(RxUtils.<SectionListDTO, List<SectionVO>>transform_data())
+                .compose(RxUtils.<List<SectionVO>>io_main())
+                .compose(RxUtils.<List<SectionVO>>load_list_start_end(presenter))
                 .subscribe(new Consumer<List<SectionVO>>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull List<SectionVO> sectionMsgVOs) throws Exception {
                         presenter.onLoadDataSuccess(sectionMsgVOs, isRefresh);
                     }
-                }, new Consumer<Throwable>() {
+                }, new RxException<>(new Consumer<Throwable>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
                         presenter.onLoadDataFail(throwable.getMessage(), isRefresh);
                     }
-                });
+                }));
     }
 
 }

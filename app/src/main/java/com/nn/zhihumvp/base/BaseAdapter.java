@@ -72,8 +72,12 @@ public abstract class BaseAdapter<M> extends RecyclerView.Adapter<RecyclerView.V
         });
     }
 
-    public void _setItems(@NonNull List<M> list) {
+    public void _setItems(@NonNull List<M> list, boolean isRefresh) {
         this.mListItem = list;
+        if (!isRefresh) {
+            // 第一次加载,全局刷新
+            notifyDataSetChanged();
+        }
     }
 
     public void _setOnItemClickListener(@Nullable OnItemClickListener onItemClickListener) {

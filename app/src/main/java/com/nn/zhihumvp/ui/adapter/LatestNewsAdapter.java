@@ -81,10 +81,9 @@ public class LatestNewsAdapter extends BaseAdapter<LatestNewsVO> {
         }
     }
 
-    public void setData(@NonNull List<LatestNewsVO> storyList, @NonNull List<String> imageList) {
-        _setItems(storyList);
+    public void setData(@NonNull List<LatestNewsVO> storyList, @NonNull List<String> imageList, boolean isRefresh) {
         this.mImageList = imageList;
-        notifyDataSetChanged();
+        _setItems(storyList, isRefresh);
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {

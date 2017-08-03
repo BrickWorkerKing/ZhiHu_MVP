@@ -29,7 +29,7 @@ public class SectionMsgListPresenter extends RxDisposableManager implements Sect
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefreshStart() {
         view.showRefreshProgress();
     }
 
@@ -44,15 +44,6 @@ public class SectionMsgListPresenter extends RxDisposableManager implements Sect
         disposableAll();
     }
 
-    @Override
-    public void onLoadStart() {
-        view.showLoadHint();
-    }
-
-    @Override
-    public void onLoadEnd() {
-        view.hideLoadHint();
-    }
 
     @Override
     public void onLoadDataSuccess(@NonNull List<SectionMsgVO> sectionMsgVOs, boolean isRefresh) {

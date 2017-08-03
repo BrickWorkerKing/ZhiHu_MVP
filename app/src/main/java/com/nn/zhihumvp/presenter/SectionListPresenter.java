@@ -29,7 +29,7 @@ public class SectionListPresenter extends RxDisposableManager implements Section
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefreshStart() {
         sectionView.showRefreshProgress();
     }
 
@@ -42,16 +42,6 @@ public class SectionListPresenter extends RxDisposableManager implements Section
     public void onDetachView() {
         this.sectionView = null;
         disposableAll();
-    }
-
-    @Override
-    public void onLoadStart() {
-
-    }
-
-    @Override
-    public void onLoadEnd() {
-
     }
 
     @Override

@@ -65,7 +65,7 @@ public class NewsContentActivity extends BaseActivity implements NewsContentCont
     }
 
     @Override
-    public void showData(@NonNull NewsContentVO newsContent, boolean isRefresh) {
+    public void showData(@NonNull NewsContentVO newsContent) {
         String html = newsContent.getHtml();
         String css = newsContent.getCss();
         StringBuffer sb = new StringBuffer("<link rel=\"stylesheet\" href=\" " + css + " \"></link>");
@@ -76,7 +76,7 @@ public class NewsContentActivity extends BaseActivity implements NewsContentCont
     }
 
     @Override
-    public void showError(String error, boolean isRefresh) {
+    public void showError(@NonNull String error) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 

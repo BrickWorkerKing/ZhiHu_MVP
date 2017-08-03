@@ -16,7 +16,7 @@ import com.nn.zhihumvp.R;
 import com.nn.zhihumvp.base.BaseAdapter;
 import com.nn.zhihumvp.base.BaseFragment;
 import com.nn.zhihumvp.contract.LatestNewsContract;
-import com.nn.zhihumvp.helper.rx.RxSchedulersHelper;
+import com.nn.zhihumvp.helper.rx.RxUtils;
 import com.nn.zhihumvp.model.vo.LatestNewsVO;
 import com.nn.zhihumvp.presenter.LatestNewsPresenter;
 import com.nn.zhihumvp.ui.activity.NewsContentActivity;
@@ -69,7 +69,7 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
         _initRefreshLayout(refreshLayout);
         ryList.setAdapter(latestNewsAdapter = new LatestNewsAdapter(_getActivity()));
         presenter = new LatestNewsPresenter(this);
-        presenter.loadNewsList(true);
+        presenter.loadNewsList(false);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -111,16 +111,6 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
     }
 
     @Override
-    public void showLoadHint() {
-
-    }
-
-    @Override
-    public void hideLoadHint() {
-
-    }
-
-    @Override
     public void showData(@NonNull Map<String, List<LatestNewsVO>> stringListMap, boolean isRefresh) {
         final List<LatestNewsVO> storyBeanList = stringListMap.get("newsList");
         final List<LatestNewsVO> topStoryBeanList = stringListMap.get("banner");
@@ -128,27 +118,30 @@ public class LatestNewsFragment extends BaseFragment implements LatestNewsContra
         for (LatestNewsVO bean : topStoryBeanList) {
             imageList.add(bean.getImage());
         }
-        _rxAdd(Observable
-                .create(new ObservableOnSubscribe<DiffUtil.DiffResult>() {
-                    @Override
-                    public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<DiffUtil.DiffResult> e) throws Exception {
-                        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new LatestDiffCallBack(latestNewsAdapter._getItems(), storyBeanList, latestNewsAdapter.getImageList(), imageList), true);
-                        e.onNext(diffResult);
-                        e.onComplete();
-                    }
-                })
-                .compose(RxSchedulersHelper.<DiffUtil.DiffResult>io_main())
-                .subscribe(new Consumer<DiffUtil.DiffResult>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull DiffUtil.DiffResult diffResult) throws Exception {
-                        diffResult.dispatchUpdatesTo(latestNewsAdapter);
-                        latestNewsAdapter.setData(storyBeanList, imageList);
-                    }
-                }));
+        if (isRefresh) {
+            _rxAdd(Observable
+                    .create(new ObservableOnSubscribe<DiffUtil.DiffResult>() {
+                        @Override
+                        public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<DiffUtil.DiffResult> e) throws Exception {
+                            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new LatestDiffCallBack(latestNewsAdapter._getItems(), storyBeanList, latestNewsAdapter.getImageList(), imageList), true);
+                            e.onNext(diffResult);
+                            e.onComplete();
+                        }
+                    })
+                    .compose(RxUtils.<DiffUtil.DiffResult>io_main())
+                    .subscribe(new Consumer<DiffUtil.DiffResult>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull DiffUtil.DiffResult diffResult) throws Exception {
+                            diffResult.dispatchUpdatesTo(latestNewsAdapter);
+                        }
+                    }));
+        }
+        latestNewsAdapter.setData(storyBeanList, imageList, isRefresh);
+
     }
 
     @Override
-    public void showError(String error, boolean isRefresh) {
+    public void showError(@NonNull String error, boolean isRefresh) {
         Toast.makeText(_getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

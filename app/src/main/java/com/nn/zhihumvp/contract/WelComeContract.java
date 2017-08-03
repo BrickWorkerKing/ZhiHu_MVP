@@ -1,7 +1,7 @@
 package com.nn.zhihumvp.contract;
 
-import com.nn.zhihumvp.base.IBasePresenter;
 import com.nn.zhihumvp.base.IBaseView;
+import com.nn.zhihumvp.base.IBaseViewPresenter;
 import com.nn.zhihumvp.model.vo.StartImageVO;
 
 /**
@@ -14,7 +14,7 @@ public interface WelComeContract {
         void toMainActivity();
     }
 
-    interface Presenter extends IBasePresenter<StartImageVO> {
+    interface Presenter extends IBaseViewPresenter<StartImageVO> {
 
         void loadImage();
 

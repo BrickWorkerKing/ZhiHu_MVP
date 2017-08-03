@@ -49,6 +49,11 @@ public class SectionMsgListAdapter extends BaseAdapter<SectionMsgVO> {
         }
     }
 
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
+
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_logo)
         ImageView ivLogo;

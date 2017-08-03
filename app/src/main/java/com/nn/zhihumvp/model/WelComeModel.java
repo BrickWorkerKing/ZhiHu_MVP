@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.nn.zhihumvp.contract.WelComeContract;
 import com.nn.zhihumvp.helper.ApiManager;
-import com.nn.zhihumvp.helper.rx.RxSchedulersHelper;
+import com.nn.zhihumvp.helper.rx.RxException;
+import com.nn.zhihumvp.helper.rx.RxUtils;
 import com.nn.zhihumvp.model.dto.StartImageDTO;
 import com.nn.zhihumvp.model.vo.StartImageVO;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 
 /**
@@ -29,23 +29,18 @@ public class WelComeModel {
 
     public Disposable loadData() {
         return ApiManager.getInstance().getApiService().getWelComePic()
-                .map(new Function<StartImageDTO, StartImageVO>() {
-                    @Override
-                    public StartImageVO apply(@io.reactivex.annotations.NonNull StartImageDTO startImageDTO) throws Exception {
-                        return startImageDTO.transform();
-                    }
-                })
-                .compose(RxSchedulersHelper.<StartImageVO>io_main())
+                .compose(RxUtils.<StartImageDTO, StartImageVO>transform_data())
+                .compose(RxUtils.<StartImageVO>io_main())
                 .subscribe(new Consumer<StartImageVO>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull StartImageVO startImageVO) throws Exception {
-                        presenter.onLoadDataSuccess(startImageVO, false);
+                        presenter.onLoadDataSuccess(startImageVO);
                     }
-                }, new Consumer<Throwable>() {
+                }, new RxException<>(new Consumer<Throwable>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                        presenter.onLoadDataFail(throwable.getMessage(), false);
+                        presenter.onLoadDataFail(throwable.getMessage());
                     }
-                });
+                }));
     }
 }

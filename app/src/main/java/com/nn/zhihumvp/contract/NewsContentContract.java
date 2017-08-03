@@ -2,8 +2,8 @@ package com.nn.zhihumvp.contract;
 
 import android.support.annotation.NonNull;
 
-import com.nn.zhihumvp.base.IBasePresenter;
 import com.nn.zhihumvp.base.IBaseView;
+import com.nn.zhihumvp.base.IBaseViewPresenter;
 import com.nn.zhihumvp.model.vo.NewsContentVO;
 
 /**
@@ -18,7 +18,7 @@ public interface NewsContentContract {
 
     }
 
-    interface Presenter extends IBasePresenter<NewsContentVO> {
+    interface Presenter extends IBaseViewPresenter<NewsContentVO> {
         void loadNewsContent(@NonNull String id);
     }
 }

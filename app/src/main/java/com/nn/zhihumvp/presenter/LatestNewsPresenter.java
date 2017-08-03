@@ -30,7 +30,7 @@ public class LatestNewsPresenter extends RxDisposableManager implements LatestNe
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefreshStart() {
         mView.showRefreshProgress();
     }
 
@@ -43,16 +43,6 @@ public class LatestNewsPresenter extends RxDisposableManager implements LatestNe
     public void onDetachView() {
         mView = null;
         disposableAll();
-    }
-
-    @Override
-    public void onLoadStart() {
-        mView.showLoadHint();
-    }
-
-    @Override
-    public void onLoadEnd() {
-        mView.hideLoadHint();
     }
 
     @Override

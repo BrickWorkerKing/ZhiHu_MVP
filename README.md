@@ -1,1 +1,1 @@
-MVP + RxJava + Retrofit2
+MVP + RxJava2 + Retrofit2

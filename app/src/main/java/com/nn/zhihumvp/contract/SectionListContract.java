@@ -1,6 +1,7 @@
 package com.nn.zhihumvp.contract;
 
-import com.nn.zhihumvp.base.IBasePresenter;
+import com.nn.zhihumvp.base.IBaseListView;
+import com.nn.zhihumvp.base.IBaseListViewPresenter;
 import com.nn.zhihumvp.base.IBaseView;
 import com.nn.zhihumvp.model.vo.SectionVO;
 
@@ -11,18 +12,11 @@ import java.util.List;
  */
 public interface SectionListContract {
 
-    interface View extends IBaseView<List<SectionVO>> {
-        void showRefreshProgress();
-
-        void hideRefreshProgress();
+    interface View extends IBaseListView<List<SectionVO>> {
     }
 
-    interface Presenter extends IBasePresenter<List<SectionVO>> {
+    interface Presenter extends IBaseListViewPresenter<List<SectionVO>> {
         void loadSectionList(boolean isRefresh);
-
-        void onRefresh();
-
-        void onRefreshEnd();
     }
 
 }
