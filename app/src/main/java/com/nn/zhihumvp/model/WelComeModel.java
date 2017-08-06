@@ -30,7 +30,7 @@ public class WelComeModel {
     public Disposable loadData() {
         return ApiManager.getInstance().getApiService().getWelComePic()
                 .compose(RxUtils.<StartImageDTO, StartImageVO>transform_data())
-                .compose(RxUtils.<StartImageVO>io_main())
+                .compose(RxUtils.io_main())
                 .subscribe(new Consumer<StartImageVO>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull StartImageVO startImageVO) throws Exception {
